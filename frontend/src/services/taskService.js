@@ -88,7 +88,7 @@ export const updateTaskStatus = async (taskId, status) => {
 export const deleteTask = async (taskId) => {
   const token = await getAuthToken();
   
-  const response = await fetch(`${API_URL}/tasks?taskId=${taskId}`, {
+  const response = await fetch(`${API_URL}/tasks/${taskId}`, {
     method: 'DELETE',
     headers: {
       'Authorization': `Bearer ${token}`

@@ -19,8 +19,8 @@ export const useTasks = (user, userRole) => {
       setError(null);
       const fetchedTasks = await taskService.fetchTasks();
       
-      // Filter tasks for Members - show only assigned tasks
-      if (userRole === 'Member' && user) {
+      // Filter tasks for members - show only assigned tasks
+      if (userRole === 'member' && user) {
         const userEmail = user.attributes?.email;
         const filtered = fetchedTasks.filter(task => 
           task.assignedMembers?.includes(userEmail)

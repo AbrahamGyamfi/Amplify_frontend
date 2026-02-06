@@ -36,15 +36,16 @@ const TaskCard = ({
         <select
           value={task.status}
           onChange={(e) => onStatusChange(task.taskId, e.target.value)}
-          disabled={loading || (userRole === 'Member' && task.status === 'closed')}
+          disabled={loading}
         >
           <option value="pending">Pending</option>
           <option value="in-progress">In Progress</option>
           <option value="completed">Completed</option>
-          {userRole === 'Admin' && <option value="closed">Closed</option>}
+          <option value="blocked">Blocked</option>
+          {userRole === 'admin' && <option value="cancelled">Cancelled</option>}
         </select>
         
-        {userRole === 'Admin' && (
+        {userRole === 'admin' && (
           <button 
             onClick={() => onDelete(task.taskId)} 
             className="delete-btn"

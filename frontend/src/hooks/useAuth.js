@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
-  const [userRole, setUserRole] = useState('Member');
+  const [userRole, setUserRole] = useState('member');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -18,17 +18,20 @@ export const useAuth = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       setUser(currentUser);
       
-      // Get role from Cognito groups or custom attribute
-      const session = await Auth.currentSession();
-      const groups = session.getIdToken().payload['cognito:groups'] || [];
+      // Get role based on email domain to match Lambda logic
+      const email = currentUser.attributes?.email || '';
       
-      // Check if user is in Admin group
-      if (groups.includes('Admin')) {
-        setUserRole('Admin');
+      // Check email domain (matches Lambda post-confirmation.js logic)
+      if (email.toLowerCase().includes('@amalitech.com')) {
+        setUserRole('admin');
+      } else if (email.toLowerCase().includes('@amalitechtraining.org')) {
+        setUserRole('member');
       } else {
-        // Fallback to custom attribute
-        const role = currentUser.attributes['custom:role'] || 'Member';
-        setUserRole(role);
+        // Fallback to cognito groups or custom attribute
+        const session = await Auth.currentSession();
+        const groups = session.getIdToken().payload['cognito:groups'] || [];
+        const role = groups.includes('Admin') ? 'admin' : (currentUser.attributes['custom:role'] || 'member');
+        setUserRole(role.toLowerCase());
       }
       
       return currentUser;
@@ -45,7 +48,7 @@ export const useAuth = () => {
     try {
       await Auth.signOut();
       setUser(null);
-      setUserRole('Member');
+      setUserRole('member');
     } catch (error) {
       console.error('Error signing out:', error);
       setError('Failed to sign out');

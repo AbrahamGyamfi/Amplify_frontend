@@ -33,7 +33,7 @@ function App() {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
-    if (userRole !== 'Admin') {
+    if (userRole !== 'admin') {
       setError('Only admins can create tasks');
       return;
     }
@@ -68,7 +68,7 @@ function App() {
 
             {loading && <div className="loading">Loading...</div>}
 
-            {userRole === 'Admin' && (
+            {userRole === 'admin' && (
               <TaskForm
                 newTask={newTask}
                 setNewTask={setNewTask}
