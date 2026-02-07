@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +9,15 @@ export const useAuth = () => {
 
   useEffect(() => {
     checkUser();
+
+    // Listen for authentication events
+    const authListener = Hub.listen('auth', ({ payload: { event } }) => {
+      if (event === 'signIn' || event === 'autoSignIn') {
+        checkUser();
+      }
+    });
+
+    return () => authListener();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
