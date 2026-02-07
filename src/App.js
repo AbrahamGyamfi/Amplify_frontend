@@ -52,7 +52,7 @@ function App() {
 
   return (
     <Authenticator
-      signUpAttributes={['email']}
+      signUpAttributes={['email', 'name']}
       socialProviders={[]}
     >
       {({ signOut, user }) => (
