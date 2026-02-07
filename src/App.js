@@ -50,9 +50,34 @@ function App() {
     }
   };
 
+  const formFields = {
+    signUp: {
+      name: {
+        label: 'Full Name',
+        placeholder: 'Enter your full name',
+        order: 1
+      },
+      email: {
+        label: 'Email Address',
+        placeholder: 'Enter your email',
+        order: 2
+      },
+      password: {
+        label: 'Password',
+        placeholder: 'Enter your password',
+        order: 3
+      },
+      confirm_password: {
+        label: 'Confirm Password',
+        order: 4
+      }
+    }
+  };
+
   return (
     <Authenticator
       signUpAttributes={['email', 'name']}
+      formFields={formFields}
       socialProviders={[]}
     >
       {({ signOut, user }) => (
