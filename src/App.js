@@ -55,16 +55,26 @@ function App() {
       email: {
         label: 'Email Address',
         placeholder: 'Enter your email',
-        order: 1
+        order: 1,
+        isRequired: true
       },
       password: {
         label: 'Password',
         placeholder: 'Enter your password',
-        order: 2
+        order: 2,
+        isRequired: true
       },
       confirm_password: {
         label: 'Confirm Password',
-        order: 3
+        placeholder: 'Confirm your password',
+        order: 3,
+        isRequired: true
+      }
+    },
+    signIn: {
+      username: {
+        label: 'Email Address',
+        placeholder: 'Enter your email'
       }
     }
   };
@@ -73,6 +83,7 @@ function App() {
     <Authenticator
       signUpAttributes={['email']}
       formFields={formFields}
+      loginMechanisms={['email']}
       socialProviders={[]}
     >
       {({ signOut, user }) => (
