@@ -53,7 +53,32 @@ function App() {
   return (
     <Authenticator
       signUpAttributes={['email']}
+      loginMechanisms={['email']}
       socialProviders={[]}
+      formFields={{
+        signIn: {
+          username: {
+            label: 'Email',
+            placeholder: 'Enter your email'
+          }
+        },
+        signUp: {
+          email: {
+            label: 'Email',
+            placeholder: 'Enter your email',
+            order: 1
+          },
+          password: {
+            label: 'Password',
+            placeholder: 'Enter your password',
+            order: 2
+          },
+          confirm_password: {
+            label: 'Confirm Password',
+            order: 3
+          }
+        }
+      }}
     >
       {({ signOut, user }) => (
         <div className="App">
