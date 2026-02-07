@@ -131,6 +131,7 @@ const TaskForm = ({
               className="search-input"
               disabled={loadingMembers}
             />
+            <span className="dropdown-arrow" onClick={() => !loadingMembers && setShowDropdown(!showDropdown)}>▼</span>
             
             {showDropdown && (
               <div className="dropdown-list">
