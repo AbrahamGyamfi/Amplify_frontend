@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Auth } from 'aws-amplify';
+import { Auth, Hub } from 'aws-amplify';
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -9,6 +9,15 @@ export const useAuth = () => {
 
   useEffect(() => {
     checkUser();
+    
+    // Listen for auth events to update role when user signs in
+    const listener = Hub.listen('auth', ({ payload: { event } }) => {
+      if (event === 'signIn') {
+        checkUser();
+      }
+    });
+
+    return () => listener();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -18,20 +27,27 @@ export const useAuth = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       setUser(currentUser);
       
-      // Get role based on email domain to match Lambda logic
-      const email = currentUser.attributes?.email || '';
+      // Get user's Cognito groups from JWT token (most reliable method)
+      const session = await Auth.currentSession();
+      const groups = session.getIdToken().payload['cognito:groups'] || [];
       
-      // Check email domain (matches Lambda post-confirmation.js logic)
-      if (email.toLowerCase().includes('@amalitech.com')) {
+      // Check if user is in admin group (groups are lowercase: 'admin', 'member')
+      if (groups.includes('admin')) {
         setUserRole('admin');
-      } else if (email.toLowerCase().includes('@amalitechtraining.org')) {
+        console.log('User role set to: admin (from Cognito groups)');
+      } else if (groups.includes('member')) {
         setUserRole('member');
+        console.log('User role set to: member (from Cognito groups)');
       } else {
-        // Fallback to cognito groups or custom attribute
-        const session = await Auth.currentSession();
-        const groups = session.getIdToken().payload['cognito:groups'] || [];
-        const role = groups.includes('Admin') ? 'admin' : (currentUser.attributes['custom:role'] || 'member');
-        setUserRole(role.toLowerCase());
+        // Fallback: Check email domain if no groups assigned
+        const email = currentUser.attributes?.email || '';
+        if (email.toLowerCase().includes('@amalitech.com')) {
+          setUserRole('admin');
+          console.log('User role set to: admin (from email domain)');
+        } else {
+          setUserRole('member');
+          console.log('User role set to: member (from email domain)');
+        }
       }
       
       return currentUser;
