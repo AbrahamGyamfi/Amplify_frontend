@@ -52,9 +52,9 @@ function App() {
 
   const formFields = {
     signUp: {
-      name: {
-        label: 'Full Name',
-        placeholder: 'Enter your full name',
+      username: {
+        label: 'Username',
+        placeholder: 'Choose your username',
         order: 1
       },
       email: {
@@ -76,7 +76,7 @@ function App() {
 
   return (
     <Authenticator
-      signUpAttributes={['email', 'name']}
+      signUpAttributes={['email']}
       formFields={formFields}
       socialProviders={[]}
     >
