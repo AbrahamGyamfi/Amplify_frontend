@@ -52,24 +52,19 @@ function App() {
 
   const formFields = {
     signUp: {
-      username: {
-        label: 'Username',
-        placeholder: 'Choose your username',
-        order: 1
-      },
       email: {
         label: 'Email Address',
         placeholder: 'Enter your email',
-        order: 2
+        order: 1
       },
       password: {
         label: 'Password',
         placeholder: 'Enter your password',
-        order: 3
+        order: 2
       },
       confirm_password: {
         label: 'Confirm Password',
-        order: 4
+        order: 3
       }
     }
   };
