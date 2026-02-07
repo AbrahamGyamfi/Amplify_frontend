@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Auth } from 'aws-amplify';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -11,9 +11,24 @@ const TaskForm = ({
 }) => {
   const [members, setMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     fetchMembers();
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   const fetchMembers = async () => {
@@ -41,11 +56,24 @@ const TaskForm = ({
   };
 
   const handleMemberSelection = (email) => {
-    const updatedAssignees = newTask.assignedTo.includes(email)
-      ? newTask.assignedTo.filter(e => e !== email)
-      : [...newTask.assignedTo, email];
-    setNewTask({ ...newTask, assignedTo: updatedAssignees });
+    if (!newTask.assignedTo.includes(email)) {
+      setNewTask({ ...newTask, assignedTo: [...newTask.assignedTo, email] });
+    }
+    setSearchTerm('');
+    setShowDropdown(false);
   };
+
+  const removeMember = (email) => {
+    setNewTask({ 
+      ...newTask, 
+      assignedTo: newTask.assignedTo.filter(e => e !== email) 
+    });
+  };
+
+  const filteredMembers = members.filter(member => 
+    member.email.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    !newTask.assignedTo.includes(member.email)
+  );
 
   return (
     <section className="create-task">
@@ -67,31 +95,61 @@ const TaskForm = ({
         
         <div className="assignees-section">
           <label>Assign to Members: *</label>
-          {loadingMembers ? (
-            <p>Loading members...</p>
-          ) : (
-            <div className="members-list">
-              {members.length === 0 ? (
-                <p>No members available</p>
-              ) : (
-                members.map((member) => (
-                  <label key={member.email} className="member-checkbox">
-                    <input
-                      type="checkbox"
-                      checked={newTask.assignedTo.includes(member.email)}
-                      onChange={() => handleMemberSelection(member.email)}
-                    />
-                    <span>{member.email} ({member.role})</span>
-                  </label>
-                ))
-              )}
-            </div>
-          )}
+          
+          {/* Selected members tags */}
           {newTask.assignedTo.length > 0 && (
-            <div className="selected-members">
-              <strong>Selected:</strong> {newTask.assignedTo.join(', ')}
+            <div className="selected-members-tags">
+              {newTask.assignedTo.map((email) => (
+                <span key={email} className="member-tag">
+                  {email}
+                  <button 
+                    type="button" 
+                    onClick={() => removeMember(email)}
+                    className="remove-tag-btn"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
             </div>
           )}
+
+          {/* Searchable dropdown */}
+          <div className="search-dropdown-container" ref={dropdownRef}>
+            <input
+              type="text"
+              placeholder="Search and select members..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowDropdown(true);
+              }}
+              onFocus={() => setShowDropdown(true)}
+              className="search-input"
+              disabled={loadingMembers}
+            />
+            
+            {showDropdown && searchTerm && (
+              <div className="dropdown-list">
+                {loadingMembers ? (
+                  <div className="dropdown-item">Loading...</div>
+                ) : filteredMembers.length === 0 ? (
+                  <div className="dropdown-item">No members found</div>
+                ) : (
+                  filteredMembers.map((member) => (
+                    <div
+                      key={member.email}
+                      className="dropdown-item"
+                      onClick={() => handleMemberSelection(member.email)}
+                    >
+                      <span className="member-email">{member.email}</span>
+                      <span className="member-role">({member.role})</span>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="form-row">
