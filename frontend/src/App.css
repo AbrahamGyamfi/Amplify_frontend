@@ -497,6 +497,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: #333;
 }
 
 .dropdown-item:hover {
@@ -505,6 +506,15 @@
 
 .dropdown-item:not(:last-child) {
   border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-item:first-child:last-child {
+  color: #666;
+  cursor: default;
+}
+
+.dropdown-item:first-child:last-child:hover {
+  background: white;
 }
 
 .member-email {

@@ -45,8 +45,11 @@ const TaskForm = ({
       
       if (response.ok) {
         const data = await response.json();
-        const activeUsers = (data.users || []).filter(user => user.status === 'active');
-        setMembers(activeUsers);
+        // Filter to only show active members (exclude admins)
+        const activeMembers = (data.users || []).filter(user => 
+          user.status === 'active' && user.role === 'member'
+        );
+        setMembers(activeMembers);
       }
     } catch (error) {
       console.error('Error fetching members:', error);
@@ -129,12 +132,14 @@ const TaskForm = ({
               disabled={loadingMembers}
             />
             
-            {showDropdown && searchTerm && (
+            {showDropdown && (
               <div className="dropdown-list">
                 {loadingMembers ? (
                   <div className="dropdown-item">Loading...</div>
                 ) : filteredMembers.length === 0 ? (
-                  <div className="dropdown-item">No members found</div>
+                  <div className="dropdown-item">
+                    {searchTerm ? 'No members found' : 'No members available'}
+                  </div>
                 ) : (
                   filteredMembers.map((member) => (
                     <div
