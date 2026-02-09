@@ -28,7 +28,7 @@ const TaskCard = ({
       </div>
 
       <div className="click-indicator">
-        Click for details →
+        ↵
       </div>
     </div>
   );

@@ -20,7 +20,7 @@ const TaskList = ({
   return (
     <section className="tasks-list">
       <div className="tasks-header">
-        <h2>{userRole === 'Admin' ? 'All Tasks' : 'My Tasks'} ({filteredTasks.length})</h2>
+        <h2>{userRole === 'Admin' ? 'All Tasks' : 'Tasks Assigned'} ({filteredTasks.length})</h2>
         <div className="filter-controls">
           <label>Filter by Status:</label>
           <select value={filterStatus} onChange={(e) => onFilterChange(e.target.value)}>
