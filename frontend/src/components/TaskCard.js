@@ -14,7 +14,6 @@ const TaskCard = ({
     <div 
       className={`task-card ${task.status} priority-${task.priority}`}
       onClick={() => navigate(`/task/${task.taskId}`)}
-      style={{ cursor: 'pointer' }}
     >
       <div className="task-header">
         <h3>{task.title}</h3>
@@ -26,6 +25,10 @@ const TaskCard = ({
         {task.dueDate && (
           <div><strong>Due:</strong> {new Date(task.dueDate).toLocaleDateString()}</div>
         )}
+      </div>
+
+      <div className="click-indicator">
+        Click for details →
       </div>
     </div>
   );

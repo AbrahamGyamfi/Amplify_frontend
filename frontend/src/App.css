@@ -268,23 +268,41 @@
 
 .tasks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 1.5rem;
 }
 
 .task-card {
   background: white;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
   border: 1px solid #e8eaed;
   border-left: 4px solid #1967d2;
   transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
 }
 
 .task-card:hover {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   transform: translateY(-2px);
+}
+
+.click-indicator {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e8eaed;
+  color: #1967d2;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: right;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.task-card:hover .click-indicator {
+  opacity: 1;
 }
 
 .task-card.pending {
