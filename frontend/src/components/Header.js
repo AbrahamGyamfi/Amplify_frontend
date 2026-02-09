@@ -3,7 +3,7 @@ import React from 'react';
 const Header = ({ userEmail, userRole, onSignOut }) => {
   return (
     <header className="App-header">
-      <h1>Task Management System</h1>
+      <h1>Task Manager</h1>
       <div className="user-info">
         <span>Welcome, {userEmail}</span>
         <span className={`role-badge ${userRole?.toLowerCase()}`}>{userRole}</span>
