@@ -585,3 +585,160 @@
   background: #1967d2;
   color: white;
 }
+
+/* Dashboard Styles */
+.dashboard {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  border: 1px solid #e8eaed;
+}
+
+.dashboard h2 {
+  margin: 0 0 1.5rem 0;
+  color: #333;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid #e8eaed;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: #1967d2;
+}
+
+.stat-card.completed h3 {
+  color: #1e8e3e;
+}
+
+.stat-card.uncompleted h3 {
+  color: #f9ab00;
+}
+
+.stat-card p {
+  margin: 0.5rem 0 0 0;
+  color: #666;
+  font-weight: 600;
+}
+
+.dashboard-actions {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.create-task-btn {
+  background: #1e8e3e;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(30, 142, 62, 0.2);
+}
+
+.create-task-btn:hover {
+  background: #188038;
+  box-shadow: 0 4px 8px rgba(30, 142, 62, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Create Task Page Styles */
+.create-task-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  margin: 1rem 0 0 0;
+  color: #333;
+}
+
+.back-btn {
+  background: #f8f9fa;
+  color: #1967d2;
+  border: 1px solid #e8eaed;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: #e8f0fe;
+  border-color: #1967d2;
+}
+
+/* Progress Bar Styles */
+.progress-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e8eaed;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.progress-percentage {
+  color: #1967d2;
+  font-size: 1.1rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 24px;
+  background: #e8eaed;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1e8e3e 0%, #34a853 100%);
+  border-radius: 12px;
+  transition: width 0.5s ease;
+  box-shadow: 0 2px 4px rgba(30, 142, 62, 0.3);
+}

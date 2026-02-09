@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import './App.css';
 import './config/amplifyConfig';
 import Header from './components/Header';
 import ErrorMessage from './components/ErrorMessage';
-import TaskForm from './components/TaskForm';
-import TaskList from './components/TaskList';
+import AdminDashboard from './pages/AdminDashboard';
+import MemberDashboard from './pages/MemberDashboard';
+import CreateTask from './pages/CreateTask';
 import { useAuth } from './hooks/useAuth';
 import { useTasks } from './hooks/useTasks';
 
@@ -31,24 +33,7 @@ function App() {
   });
   const [filterStatus, setFilterStatus] = useState('all');
 
-  const handleCreateTask = async (e) => {
-    e.preventDefault();
-    if (userRole !== 'admin') {
-      setError('Only admins can create tasks');
-      return;
-    }
 
-    const result = await createTask(newTask);
-    if (result.success) {
-      setNewTask({ 
-        title: '', 
-        description: '', 
-        assignedTo: [], 
-        dueDate: '', 
-        priority: 'medium' 
-      });
-    }
-  };
 
   return (
     <Authenticator
@@ -81,38 +66,60 @@ function App() {
       }}
     >
       {({ signOut, user }) => (
-        <div className="App">
-          <Header 
-            userEmail={user?.attributes?.email} 
-            userRole={userRole} 
-            onSignOut={handleSignOut} 
-          />
-
-          <main className="main-content">
-            <ErrorMessage message={error} onClose={() => setError(null)} />
-
-            {loading && <div className="loading">Loading...</div>}
-
-            {userRole === 'admin' && (
-              <TaskForm
-                newTask={newTask}
-                setNewTask={setNewTask}
-                onSubmit={handleCreateTask}
-                loading={loading}
-              />
-            )}
-
-            <TaskList
-              tasks={tasks}
-              userRole={userRole}
-              filterStatus={filterStatus}
-              onFilterChange={setFilterStatus}
-              onStatusChange={updateTaskStatus}
-              onDelete={deleteTask}
-              loading={loading}
+        <Router>
+          <div className="App">
+            <Header 
+              userEmail={user?.attributes?.email} 
+              userRole={userRole} 
+              onSignOut={handleSignOut} 
             />
-          </main>
-        </div>
+
+            <main className="main-content">
+              <ErrorMessage message={error} onClose={() => setError(null)} />
+
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    userRole === 'admin' ? (
+                      <AdminDashboard
+                        tasks={tasks}
+                        userRole={userRole}
+                        filterStatus={filterStatus}
+                        setFilterStatus={setFilterStatus}
+                        updateTaskStatus={updateTaskStatus}
+                        deleteTask={deleteTask}
+                        loading={loading}
+                      />
+                    ) : (
+                      <MemberDashboard
+                        tasks={tasks}
+                        userRole={userRole}
+                        filterStatus={filterStatus}
+                        setFilterStatus={setFilterStatus}
+                        updateTaskStatus={updateTaskStatus}
+                        loading={loading}
+                      />
+                    )
+                  } 
+                />
+                <Route 
+                  path="/create-task" 
+                  element={
+                    userRole === 'admin' ? (
+                      <CreateTask
+                        createTask={createTask}
+                        loading={loading}
+                      />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  } 
+                />
+              </Routes>
+            </main>
+          </div>
+        </Router>
       )}
     </Authenticator>
   );
