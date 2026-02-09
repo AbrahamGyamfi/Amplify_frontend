@@ -415,7 +415,23 @@
   box-shadow: 0 2px 8px rgba(217, 48, 37, 0.3);
 }
 
-.delete-btn:disabled,
+.edit-btn {
+  background-color: #1967d2;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background-color: #1557b0;
+  box-shadow: 0 2px 8px rgba(25, 103, 210, 0.3);
+}
+
+.edit-btn:disabled,
 .task-actions select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -741,4 +757,111 @@
   border-radius: 12px;
   transition: width 0.5s ease;
   box-shadow: 0 2px 4px rgba(30, 142, 62, 0.3);
+}
+
+/* Task Detail Page Styles */
+.task-detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.task-detail-card {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+  border: 1px solid #e8eaed;
+}
+
+.task-detail-card.priority-high {
+  border-left: 6px solid #d93025;
+}
+
+.task-detail-card.priority-medium {
+  border-left: 6px solid #f9ab00;
+}
+
+.task-detail-card.priority-low {
+  border-left: 6px solid #1967d2;
+}
+
+.task-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e8eaed;
+}
+
+.task-detail-header h1 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 2rem;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.task-detail-section {
+  margin-bottom: 2rem;
+}
+
+.task-detail-section h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.task-detail-section p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.task-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e8eaed;
+}
+
+.task-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-detail-item strong {
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.task-detail-item span {
+  color: #333;
+  font-size: 1rem;
+}
+
+.status-select {
+  padding: 0.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.task-simple-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 1rem;
 }

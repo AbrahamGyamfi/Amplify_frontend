@@ -9,6 +9,8 @@ import ErrorMessage from './components/ErrorMessage';
 import AdminDashboard from './pages/AdminDashboard';
 import MemberDashboard from './pages/MemberDashboard';
 import CreateTask from './pages/CreateTask';
+import EditTask from './pages/EditTask';
+import TaskDetail from './pages/TaskDetail';
 import { useAuth } from './hooks/useAuth';
 import { useTasks } from './hooks/useTasks';
 
@@ -21,7 +23,8 @@ function App() {
     setError, 
     createTask, 
     updateTaskStatus, 
-    deleteTask 
+    deleteTask,
+    updateTask
   } = useTasks(user, userRole);
   
   const [newTask, setNewTask] = useState({ 
@@ -114,6 +117,32 @@ function App() {
                     ) : (
                       <Navigate to="/" replace />
                     )
+                  } 
+                />
+                <Route 
+                  path="/edit-task/:taskId" 
+                  element={
+                    userRole === 'admin' ? (
+                      <EditTask
+                        tasks={tasks}
+                        updateTask={updateTask}
+                        loading={loading}
+                      />
+                    ) : (
+                      <Navigate to="/" replace />
+                    )
+                  } 
+                />
+                <Route 
+                  path="/task/:taskId" 
+                  element={
+                    <TaskDetail
+                      tasks={tasks}
+                      userRole={userRole}
+                      updateTaskStatus={updateTaskStatus}
+                      deleteTask={deleteTask}
+                      loading={loading}
+                    />
                   } 
                 />
               </Routes>

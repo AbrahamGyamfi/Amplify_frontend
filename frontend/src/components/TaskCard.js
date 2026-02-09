@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const TaskCard = ({ 
   task, 
@@ -7,52 +8,23 @@ const TaskCard = ({
   onDelete, 
   loading 
 }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className={`task-card ${task.status} priority-${task.priority}`}>
+    <div 
+      className={`task-card ${task.status} priority-${task.priority}`}
+      onClick={() => navigate(`/task/${task.taskId}`)}
+      style={{ cursor: 'pointer' }}
+    >
       <div className="task-header">
         <h3>{task.title}</h3>
         <span className={`priority-badge ${task.priority}`}>{task.priority}</span>
       </div>
-      <p>{task.description}</p>
       
-      <div className="task-meta">
-        <div>
-          <strong>Assigned to:</strong> 
-          <div className="assignees-list">
-            {task.assignedMembers?.map((email, idx) => (
-              <span key={idx} className="assigned-member">{email}</span>
-            ))}
-          </div>
-        </div>
+      <div className="task-simple-meta">
         <div><strong>Status:</strong> {task.status}</div>
-        <div><strong>Created by:</strong> {task.createdBy}</div>
-        <div><strong>Created:</strong> {new Date(task.createdAt).toLocaleDateString()}</div>
         {task.dueDate && (
           <div><strong>Due:</strong> {new Date(task.dueDate).toLocaleDateString()}</div>
-        )}
-      </div>
-      
-      <div className="task-actions">
-        <select
-          value={task.status}
-          onChange={(e) => onStatusChange(task.taskId, e.target.value)}
-          disabled={loading}
-        >
-          <option value="pending">Pending</option>
-          <option value="in-progress">In Progress</option>
-          <option value="completed">Completed</option>
-          <option value="blocked">Blocked</option>
-          {userRole === 'admin' && <option value="cancelled">Cancelled</option>}
-        </select>
-        
-        {userRole === 'admin' && (
-          <button 
-            onClick={() => onDelete(task.taskId)} 
-            className="delete-btn"
-            disabled={loading}
-          >
-            Delete
-          </button>
         )}
       </div>
     </div>

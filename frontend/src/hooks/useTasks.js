@@ -85,6 +85,22 @@ export const useTasks = (user, userRole) => {
     }
   };
 
+  const updateTask = async (taskId, taskData) => {
+    try {
+      setLoading(true);
+      setError(null);
+      await taskService.updateTask(taskId, taskData);
+      await fetchTasks();
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating task:', error);
+      setError(error.message);
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     tasks,
     loading,
@@ -93,6 +109,7 @@ export const useTasks = (user, userRole) => {
     fetchTasks,
     createTask,
     updateTaskStatus,
-    deleteTask
+    deleteTask,
+    updateTask
   };
 };

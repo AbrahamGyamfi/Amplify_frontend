@@ -102,3 +102,32 @@ export const deleteTask = async (taskId) => {
 
   return await response.json();
 };
+
+/**
+ * Update a task
+ */
+export const updateTask = async (taskId, taskData) => {
+  const token = await getAuthToken();
+  
+  const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      title: taskData.title,
+      description: taskData.description,
+      assignedTo: taskData.assignedTo.filter(email => email.trim()),
+      dueDate: taskData.dueDate,
+      priority: taskData.priority
+    })
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Failed to update task');
+  }
+
+  return await response.json();
+};
