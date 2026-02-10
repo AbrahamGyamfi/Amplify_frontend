@@ -7,7 +7,8 @@ const TaskForm = ({
   newTask, 
   setNewTask, 
   onSubmit, 
-  loading 
+  loading,
+  isEdit = false
 }) => {
   const [members, setMembers] = useState([]);
   const [loadingMembers, setLoadingMembers] = useState(false);
@@ -80,7 +81,7 @@ const TaskForm = ({
 
   return (
     <section className="create-task">
-      <h2>Create New Task</h2>
+      <h2>{isEdit ? 'Update Task' : 'Create New Task'}</h2>
       <form onSubmit={onSubmit}>
         <input
           type="text"
@@ -185,7 +186,7 @@ const TaskForm = ({
           type="submit" 
           disabled={loading || newTask.assignedTo.length === 0}
         >
-          Create Task
+          {isEdit ? 'Update' : 'Create Task'}
         </button>
       </form>
     </section>

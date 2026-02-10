@@ -54,7 +54,7 @@ const EditTask = ({ tasks, updateTask, loading }) => {
         <button className="back-btn" onClick={() => navigate('/')}>
           ← Back to Dashboard
         </button>
-        <h1>Edit Task</h1>
+        <h1>Update Task</h1>
       </div>
       
       <TaskForm
