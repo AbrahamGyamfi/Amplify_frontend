@@ -39,14 +39,14 @@ export const useAuth = () => {
         setUserRole('member');
         console.log('User role set to: member (from Cognito groups)');
       } else {
-        // Fallback: Check email domain if no groups assigned
+        // Fallback: Only abraham.gyamfi@amalitech.com is admin
         const email = currentUser.attributes?.email || '';
-        if (email.toLowerCase().includes('@amalitech.com')) {
+        if (email.toLowerCase() === 'abraham.gyamfi@amalitech.com') {
           setUserRole('admin');
-          console.log('User role set to: admin (from email domain)');
+          console.log('User role set to: admin (from email check)');
         } else {
           setUserRole('member');
-          console.log('User role set to: member (from email domain)');
+          console.log('User role set to: member (default)');
         }
       }
       
